@@ -6,38 +6,28 @@
 using namespace std;
 
 
+
 Emitter::Emitter(glm::vec2 initPosition, glm::vec2 initSize, float emitTimeInterval) : GameObject2D(initPosition, 0.0f, initSize, 0) 
 {
 
 	this->emitTimeInterval = emitTimeInterval;
 	emitCounter = emitTimeInterval;
 
+	this->asteroidThrust = asteroidThrust;
+
 	particleNumber = 0;
 
-	for (int i = 0; i < 7; i++) 
-	{
-
-		string path = "Resources\\Textures\\myAsteroid1.png";
-		
-		Asteroids[i] = loadTexture(path.c_str());
-
-		if (Asteroids[i] > 0)
-			cout << "successfully loaded texture " << path << endl;
-		else
-			cout << "failed to load texture " << path << endl;
-	}
 
 	// Obtain a seed for the random number engine
 	random_device rd;
 
 	// Standard mersenne_twister_engine seeded with rd() - mt19937 is a high-quality pseudo-random number generator
 	gen = mt19937(rd());
-
-	spriteDist = uniform_int_distribution<int>(0, 6);
 	normDist = uniform_real_distribution<float>(-1.0f, 1.0f);
 	massDist = uniform_real_distribution<float>(0.05f, 0.1f);
 	scaleDist = uniform_real_distribution<float>(0.25f, 0.8f);
-
+	thrustDistY = uniform_real_distribution<float>(-0.025f, 0.025f);
+	thrustDistX = uniform_real_distribution<float>(-0.025f, 0.025f);
 
 }
 
@@ -65,9 +55,12 @@ void Emitter::update(double tDelta)
 		float scale = scaleDist(gen);
 		float mass = massDist(gen);
 		float rotationSpeed = glm::radians(normDist(gen) * 45.0f);
-		int spriteIndex = spriteDist(gen);
+		float thrustY = thrustDistY(gen);
+		float thrustX = thrustDistX(gen);
+		
+		GLuint asteroidTexture = loadTexture("Resources\\Textures\\myAsteroid1.png");
 
-		Asteroid* a1 = new Asteroid(glm::vec2(x, y), 0.0f, glm::vec2(scale, scale), Asteroids[spriteIndex], mass, rotationSpeed);
+		Asteroid* a1 = new Asteroid(glm::vec2(x, y), 0.0f, glm::vec2(scale, scale), GLuint(asteroidTexture), mass, rotationSpeed, thrustY, thrustX);
 
 		string key = string("Asteroid");
 

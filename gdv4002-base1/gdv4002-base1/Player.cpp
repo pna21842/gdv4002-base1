@@ -6,7 +6,6 @@
 #include <bitset>
 
 
-
 extern std::bitset<5> keys;
 extern glm::vec2 gravity;
 
@@ -16,11 +15,10 @@ Player::Player(glm::vec2 initPosition, float initOrientation, glm::vec2 initSize
 	velocity = glm::vec2(0.0f, 0.0f); // default to 0 velocity
 }
 
-
+float emitTimeInterval = 0.15f;
+float emitCounter = 0.15f;
 
 void Player::update(double tDelta) {
-
-
 
 	glm::vec2 F = glm::vec2(0.0f, 0.0f);
 
@@ -30,6 +28,8 @@ void Player::update(double tDelta) {
 
 	std::complex<float> i = std::complex<float>(0.0f, 1.0f);
 		auto c = exp(i * orientation);
+
+	emitCounter += (float)tDelta;
 
 	// 1. accumulate forces
 	if (keys.test(Key::W) == true) {
@@ -49,10 +49,18 @@ void Player::update(double tDelta) {
 		orientation += -playerRotationSpeed * (float)tDelta;
 	}
 	if (keys.test(Key::SPACE) == true) {
-		GLuint bulletTexture = loadTexture("Resources\\Textures\\myBullet2.png");
-		Bullet* shot = new Bullet(position, orientation, glm::vec2(0.1f, 0.1f), bulletTexture);
-		addObject("bullet", shot);
-		
+
+		if (emitCounter >= emitTimeInterval)
+		{	
+			emitCounter = 0;
+
+			GLuint bulletTexture = loadTexture("Resources\\Textures\\myBullet2.png");
+			Bullet* shot = new Bullet(position, orientation, glm::vec2(0.1f, 0.1f), bulletTexture);
+			addObject("bullet", shot);
+		}
+	}
+	else {
+		emitCounter = 0.25;
 	}
 
 	glm::vec2 drag = -velocity * dragCoefficient;

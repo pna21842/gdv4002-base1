@@ -8,6 +8,7 @@ using namespace std;
 
 // Function prototypes
 void myUpdate(GLFWwindow* window, double tDelta);
+void myRender(GLFWwindow* window);
 void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods);
 void deleteAsteroid(GLFWwindow* window, double tDelta);
 void deleteBullet(GLFWwindow* window, double tDelta);
@@ -61,7 +62,7 @@ void deleteBullet(GLFWwindow* window, double tDelta) {
 int main(void) {
 
 	// Initialise the engine (create window, setup OpenGL backend)
-	int initResult = engineInit("GDV4002 - Applied Maths for Games", 1024, 1024);
+	int initResult = engineInit("GDV4002 - Applied Maths for Games", 1024, 1024, 5.0f);
 
 	// If the engine initialisation failed report error and exit
 	if (initResult != 0) {
@@ -70,6 +71,8 @@ int main(void) {
 		return initResult; // exit if setup failed
 
 	}
+
+
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -80,26 +83,39 @@ int main(void) {
 	// Setup game scene objects here
 	//
 
-	Emitter* emitter = new Emitter(
-		glm::vec2(0.0f, getViewplaneHeight() / 2.0f * 1.2f),
-		glm::vec2(getViewplaneWidth() / 2.0f, 0.0f),
-		0.625f);
 
-	addObject("emitter", emitter);
-
+	GLuint backgroundTexture = loadTexture("Resources\\Textures\\MyBackground3.png");
+	GameObject2D* Background = new GameObject2D(glm::vec2(0.0f, 0.0f), 0.0f, glm::vec2(5.0f, 5.0f), GLuint(backgroundTexture));
+	addObject("Background", Background);
 
 	GLuint playerTexture = loadTexture("Resources\\Textures\\MyShip2.png");
-
-	Player* mainPlayer = new Player(glm::vec2(0.0f, -1.5f), glm::radians(90.0f), glm::vec2(0.625f, 0.635f), playerTexture, 1.50f);
-
+	Player* mainPlayer = new Player(glm::vec2(0.0f, 0.0f), glm::radians(90.0f), glm::vec2(0.625f, 0.635f), playerTexture, 1.50f);
 	addObject("player", mainPlayer);
 
-	GameObject2D* startText = new GameObject2D();
-	startText->position = glm::vec2(0.0f, 1.0f);
-	GLuint GameStartTexture = loadTexture("Resources\\Textures\\GameStart.png");
-	startText->textureID = GameStartTexture;
-	addObject("Text", startText);
 
+	Emitter* emitterTop = new Emitter(
+		glm::vec2(0.0f, getViewplaneHeight() / 2.0f * 1.1f),
+		glm::vec2(getViewplaneWidth() / 2.0f, 0.0f),
+		0.625f);
+	addObject("emitter", emitterTop);
+
+	Emitter* emitterLeft = new Emitter(
+		glm::vec2(-getViewplaneWidth() / 2.0f * 1.1, 0.0f),
+		glm::vec2(0.0f, getViewplaneHeight() / 2.0f),
+		0.625f);
+	addObject("emitter", emitterLeft);
+
+	Emitter* emitterRight = new Emitter(
+		glm::vec2(getViewplaneWidth() / 2.0f * 1.1, 0.0f),
+		glm::vec2(0.0f, getViewplaneHeight() / 2.0f),
+		0.625f);
+	addObject("emitter", emitterRight);
+
+	Emitter* emitterBottom = new Emitter(
+		glm::vec2(0.0f, -getViewplaneHeight() / 2.0f * 1.1f),
+		glm::vec2(getViewplaneWidth() / 2.0f, 0.0f),
+		0.625f);
+	addObject("emitter", emitterBottom);
 
 
 
@@ -110,6 +126,7 @@ int main(void) {
 
 	setUpdateFunction(deleteAsteroid, false);
 
+	setRenderFunction(myRender);
 
 
 	// Enter main loop - this handles update and render calls
@@ -124,14 +141,33 @@ int main(void) {
 
 
 void myUpdate(GLFWwindow* window, double tDelta) {
-	int secondsElapsed = secondsElapsed++;
-	
-	if (secondsElapsed = 5) {
-		getObject 
-		deleteObject(startText);
-	}
-	
+
 }
+
+
+void myRender(GLFWwindow* window) {
+
+	GameObject2D* background = getObject("Background");
+	if (background != nullptr)
+		background->render();
+
+	GameObject2D* Player = getObject("player");
+	if (Player != nullptr)
+		Player->render();
+
+	GameObjectCollection asteroids = getObjectCollection("Asteroid");
+	for (int i = 0; i < asteroids.objectCount; i++) {
+		if (asteroids.objectArray[i] != nullptr)
+			asteroids.objectArray[i]->render();
+	}
+
+	GameObjectCollection Bullets = getObjectCollection("bullet");
+	for (int i = 0; i < Bullets.objectCount; i++){
+		if (Bullets.objectArray[i] != nullptr)
+			Bullets.objectArray[i]->render();
+	}
+}
+
 
 
 

@@ -21,6 +21,7 @@ private:
 	std::uniform_int_distribution<int> spriteDist; // random integer for particle sprite selection
 	std::uniform_real_distribution<float> normDist; // -1 to 1
 	std::uniform_real_distribution<float> massDist, scaleDist;
+	std::uniform_real_distribution<float> thrustDistY, thrustDistX;
 
 public:
 
@@ -28,5 +29,7 @@ public:
 
 	void update(double tDelta) override;
 	void render() override;
+
+	float asteroidThrust;
 
 };
