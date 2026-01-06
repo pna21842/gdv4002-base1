@@ -7,7 +7,7 @@
 
 
 extern std::bitset<5> keys;
-extern glm::vec2 gravity;
+
 
 Player::Player(glm::vec2 initPosition, float initOrientation, glm::vec2 initSize, GLuint initTextureID, float mass) : GameObject2D(initPosition, initOrientation, initSize, initTextureID) {
 
@@ -66,10 +66,10 @@ void Player::update(double tDelta) {
 	glm::vec2 drag = -velocity * dragCoefficient;
 	F += drag;
 
-	//F += gravity;
 
 
-	// add impulse force
+
+	
 
 	//down - inverse teleport
 	if (position.y < -getViewplaneHeight() / 2.0f) {

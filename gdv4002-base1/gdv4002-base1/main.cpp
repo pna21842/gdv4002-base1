@@ -10,27 +10,11 @@ using namespace std;
 void myUpdate(GLFWwindow* window, double tDelta);
 void myRender(GLFWwindow* window);
 void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods);
-void deleteAsteroid(GLFWwindow* window, double tDelta);
 void deleteBullet(GLFWwindow* window, double tDelta);
 
 std::bitset<5> keys{ 0x0 };
 
-// Global vars
-glm::vec2 gravity = glm::vec2(0.0f, -0.005f);
 
-
-void deleteAsteroid(GLFWwindow* window, double tDelta) {
-
-	GameObjectCollection Asteroid = getObjectCollection("Asteroid");
-
-	for (int i = 0; i < Asteroid.objectCount; i++) {
-
-		if (Asteroid.objectArray[i]->position.y < -(getViewplaneHeight() / 2.0f)) {
-
-			deleteObject(Asteroid.objectArray[i]);
-		}
-	}
-}
 
 void deleteBullet(GLFWwindow* window, double tDelta) {
 
@@ -71,7 +55,6 @@ int main(void) {
 		return initResult; // exit if setup failed
 
 	}
-
 
 
 	glEnable(GL_BLEND);
@@ -118,13 +101,10 @@ int main(void) {
 	addObject("emitter", emitterBottom);
 
 
-
 	setKeyboardHandler(myKeyboardHandler);
 
 	listGameObjectKeys();
 	listObjectCounts();
-
-	setUpdateFunction(deleteAsteroid, false);
 
 	setRenderFunction(myRender);
 
@@ -167,8 +147,6 @@ void myRender(GLFWwindow* window) {
 			Bullets.objectArray[i]->render();
 	}
 }
-
-
 
 
 

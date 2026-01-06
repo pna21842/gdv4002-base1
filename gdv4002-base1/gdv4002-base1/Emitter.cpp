@@ -24,10 +24,10 @@ Emitter::Emitter(glm::vec2 initPosition, glm::vec2 initSize, float emitTimeInter
 	// Standard mersenne_twister_engine seeded with rd() - mt19937 is a high-quality pseudo-random number generator
 	gen = mt19937(rd());
 	normDist = uniform_real_distribution<float>(-1.0f, 1.0f);
-	massDist = uniform_real_distribution<float>(0.05f, 0.1f);
-	scaleDist = uniform_real_distribution<float>(0.25f, 0.8f);
-	thrustDistY = uniform_real_distribution<float>(-0.025f, 0.025f);
-	thrustDistX = uniform_real_distribution<float>(-0.025f, 0.025f);
+	massDist = uniform_real_distribution<float>(0.065f, 0.85f);
+	scaleDist = uniform_real_distribution<float>(0.35f, 0.8f);
+	thrustDistY = uniform_real_distribution<float>(-0.01f, 0.02f);
+	thrustDistX = uniform_real_distribution<float>(-0.0175f, 0.0175f);
 
 }
 
@@ -40,12 +40,16 @@ void Emitter::render()
 
 void Emitter::update(double tDelta) 
 {
+	if (getObjectCollection("Asteroid").objectCount >= 15) {
+		return; // limit number of asteroids
+	}
 
 	emitCounter += (float)tDelta;
 
 	while (emitCounter >= emitTimeInterval) 
 	{
-
+		
+		
 		// decrease emitCounter by emitTimeInterval - don't set to 0 as this would ignore the case where multiple particles are needed.
 		emitCounter -= emitTimeInterval;
 
@@ -72,8 +76,9 @@ void Emitter::update(double tDelta)
 
 		particleNumber++;
 
+		
 		addObject(key.c_str(), a1);
-
+		
 	}
 }
 
