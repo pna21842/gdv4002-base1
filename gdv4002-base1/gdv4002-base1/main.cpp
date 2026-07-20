@@ -15,7 +15,7 @@ int main(void) {
 	// If the engine initialisation failed report error and exit
 	if (initResult != 0) {
 
-		printf("Cannot setup game window!!!\n");
+		fprintf(stderr, "Cannot setup game window!!!\n");
 		return initResult; // exit if setup failed
 	}
 

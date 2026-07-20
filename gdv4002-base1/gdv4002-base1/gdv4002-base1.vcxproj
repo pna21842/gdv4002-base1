@@ -134,6 +134,13 @@ copy "$(SolutionDir)Libs\FreeImage\Wrapper\FreeImagePlus\dist\x64\FreeImagePlus.
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Libs\imgui\imgui.cpp" />
+    <ClCompile Include="..\Libs\imgui\imgui_demo.cpp" />
+    <ClCompile Include="..\Libs\imgui\imgui_draw.cpp" />
+    <ClCompile Include="..\Libs\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="..\Libs\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="..\Libs\imgui\imgui_tables.cpp" />
+    <ClCompile Include="..\Libs\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="GameObject2D.cpp" />
     <ClCompile Include="glPrint.cpp" />
@@ -144,6 +151,15 @@ copy "$(SolutionDir)Libs\FreeImage\Wrapper\FreeImagePlus\dist\x64\FreeImagePlus.
     <ClCompile Include="texture_loader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Libs\imgui\imconfig.h" />
+    <ClInclude Include="..\Libs\imgui\imgui.h" />
+    <ClInclude Include="..\Libs\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="..\Libs\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="..\Libs\imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="..\Libs\imgui\imgui_internal.h" />
+    <ClInclude Include="..\Libs\imgui\imstb_rectpack.h" />
+    <ClInclude Include="..\Libs\imgui\imstb_textedit.h" />
+    <ClInclude Include="..\Libs\imgui\imstb_truetype.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="GameObject2D.h" />
     <ClInclude Include="glPrint.h" />
@@ -152,6 +168,12 @@ copy "$(SolutionDir)Libs\FreeImage\Wrapper\FreeImagePlus\dist\x64\FreeImagePlus.
     <ClInclude Include="GUMemory.h" />
     <ClInclude Include="GUObject.h" />
     <ClInclude Include="texture_loader.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Libs\imgui\imgui.natstepfilter" />
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="..\Libs\imgui\imgui.natvis" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
