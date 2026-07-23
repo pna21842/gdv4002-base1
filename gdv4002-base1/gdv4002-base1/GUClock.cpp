@@ -386,50 +386,50 @@ namespace CoreStructures {
 
 
 	int GUClock::framesPerSecond() const {
-
-		return (frameCounter) ? frameCounter->framesPerSecond() : 0;
+		
+		return (frameCounter) ? frameCounter->altFramesPerSecond() : 0;
 	}
 
 
 	int GUClock::minimumFPS() const {
 
-		return (frameCounter) ? frameCounter->minimumFPS() : 0;
+		return (frameCounter) ? frameCounter->altMinimumFPS() : 0;
 	}
 
 
 	int GUClock::maximumFPS() const {
 
-		return (frameCounter) ? frameCounter->maximumFPS() : 0;
+		return (frameCounter) ? frameCounter->altMaximumFPS() : 0;
 	}
 
 
 	gu_seconds GUClock::averageFPS() const {
 
-		return (frameCounter) ? frameCounter->averageFPS() : 0.0;
+		return (frameCounter) ? frameCounter->altAverageFPS() : 0.0;
 	}
 
 
 	gu_seconds GUClock::secondsPerFrame() const {
 
-		return (frameCounter) ? frameCounter->secondsPerFrame() : 0.0;
+		return (frameCounter) ? frameCounter->altSecondsPerFrame() : 0.0;
 	}
 
 
 	gu_seconds GUClock::minimumSPF() const {
 
-		return (frameCounter) ? frameCounter->minimumSPF() : 0.0;
+		return (frameCounter) ? frameCounter->altMinimumSPF() : 0.0;
 	}
 
 
 	gu_seconds GUClock::maximumSPF() const {
 
-		return (frameCounter) ? frameCounter->maximumSPF() : 0.0;
+		return (frameCounter) ? frameCounter->altMaximumSPF() : 0.0;
 	}
 
 
 	gu_seconds GUClock::averageSPF() const {
 
-		return (frameCounter) ? frameCounter->averageSPF() : 0.0;
+		return (frameCounter) ? frameCounter->altAverageSPF() : 0.0;
 	}
 
 }

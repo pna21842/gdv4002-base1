@@ -175,9 +175,9 @@ void engineMainLoop() {
 		defaultRenderScene();
 
 		// (optional) Update window title to show current fps / spf
-		char timingString[256];
-		sprintf_s(timingString, 256, "%s: Average fps: %.0f; Average spf: %f", windowTitleString.c_str(), gameClock->averageFPS(), gameClock->averageSPF() / 1000.0f);
-		glfwSetWindowTitle(window, timingString);
+		///char timingString[256];
+		///sprintf_s(timingString, 256, "%s: Average fps: %.0f; Average spf: %f", windowTitleString.c_str(), gameClock->averageFPS(), gameClock->averageSPF() / 1000.0f);
+		///glfwSetWindowTitle(window, timingString);
 	}
 }
 
@@ -563,10 +563,29 @@ void defaultRenderScene()
 	ImGui::NewFrame();
 
 	// Simple imgui window
-	ImGui::Begin("Dear ImGUI Window");   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-	ImGui::Text("Hello from Dear IMGUI!");
-	if (ImGui::Button("Report"))
-		printf("hey hey!");
+	ImGui::Begin("Dear ImGUI Test");   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+	ImGui::Text("Hello, World!");
+	if (ImGui::Button("Report")) {
+
+		printf("Test button pressed\n");
+	}
+	ImGui::SameLine();
+
+	if (ImGui::Checkbox("Show axis lines", &_showAxisLines)) {
+
+		printf("Show axis lines toggle\n");
+	}
+	ImGui::Text("Average fps: %.0f", gameClock->averageFPS());
+	//ImGui::Text("Min fps: %.0f", gameClock->minimumFPS());
+	//ImGui::Text("Max fps: %.0f", gameClock->maximumFPS());
+
+	ImGui::Text("Average spf: %f", gameClock->averageSPF() / 1000.0f);
+
+
+	//cout << "max SPF = " << (frameCounter->altMaximumSPF() /*/ 1000.0*/) << endl;
+	//cout << "min SPF = " << (frameCounter->altMinimumSPF() /*/ 1000.0*/) << endl;
+	//cout << "average SPF = " << (frameCounter->altAverageSPF() /*/ 1000.0*/) << endl;
+
 	ImGui::End();
 
 	//
