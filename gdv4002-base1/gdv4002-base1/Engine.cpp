@@ -2,6 +2,8 @@
 
 // Engine.cpp ver 1.4
 
+#define ENGINE_USE_IMGUI
+
 #pragma region Engine variables
 
 static GLFWwindow* window = nullptr;
@@ -57,7 +59,7 @@ static void glfw_error_callback(int error, const char* description)
 	fprintf(stderr, "GLFW Error %d: %s\n", error, description);
 }
 
-int engineInit(const char* windowTitle, int initWidth, int initHeight, float initViewplaneWidth) {
+int engineInit(const char* windowTitle, int initWidth, int initHeight, float initViewplaneWidth, bool enableVSync) {
 
 	glfwSetErrorCallback(glfw_error_callback);
 
@@ -74,8 +76,12 @@ int engineInit(const char* windowTitle, int initWidth, int initHeight, float ini
 
 	const char* glsl_version = "#version 410";
 
+#ifdef ENGINE_USE_IMGUI
 	float main_scale = ImGui_ImplGlfw_GetContentScaleForMonitor(glfwGetPrimaryMonitor());
 	window = glfwCreateWindow(int(initWidth * main_scale), int(initHeight * main_scale), windowTitle, NULL, NULL);
+#else
+	window = glfwCreateWindow(initWidth, initHeight, windowTitle, NULL, NULL);
+#endif
 
 	// Check window was created successfully
 	if (window == nullptr)
@@ -86,7 +92,16 @@ int engineInit(const char* windowTitle, int initWidth, int initHeight, float ini
 	}
 
 	glfwMakeContextCurrent(window);
-	glfwSwapInterval(1); // Enable vsync
+
+	if (enableVSync) {
+
+		glfwSwapInterval(1); // Enable vsync
+	}
+	else {
+
+		glfwSwapInterval(0); // Disable vsync
+	}
+	
 
 	windowTitleString = std::string(windowTitle);
 
@@ -113,11 +128,13 @@ int engineInit(const char* windowTitle, int initWidth, int initHeight, float ini
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 	glFrontFace(GL_CCW);
+	
+#ifdef ENGINE_USE_IMGUI
 
 	// Initialise imgui
-	printf("Checking imgui...\n");
+	//printf("Checking imgui...\n");
 	IMGUI_CHECKVERSION();
-	printf("...imgui check done!\n");
+	//printf("...imgui check done!\n");
 	ImGui::CreateContext();
 	ImGui::StyleColorsDark(); // Setup Dear ImGui style
 
@@ -129,6 +146,8 @@ int engineInit(const char* windowTitle, int initWidth, int initHeight, float ini
 	// Setup Platform/Renderer backends
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init(glsl_version);
+
+#endif
 
 
 	// Initialise main game clock (starts by default)
@@ -555,6 +574,9 @@ int getObjectCounts(string key) {
 
 void defaultRenderScene()
 {
+
+#ifdef ENGINE_USE_IMGUI
+
 	//
 	// Start the Dear ImGui frame
 	//
@@ -588,11 +610,19 @@ void defaultRenderScene()
 
 	ImGui::End();
 
+#endif
+
+
 	//
 	// Render
 	//
 
+
+#ifdef ENGINE_USE_IMGUI
+	// Prep imgui elements for drawing later
 	ImGui::Render();
+#endif
+
 
 	// Setup display for main content
 	int display_w, display_h;
@@ -649,7 +679,12 @@ void defaultRenderScene()
 
 	}
 
+
+#ifdef ENGINE_USE_IMGUI
+	// Render prepped imgui data (see above Render function)
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+#endif
+
 
 	// Display newly rendered frame
 	glfwSwapBuffers(window);

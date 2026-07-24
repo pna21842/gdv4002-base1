@@ -74,7 +74,7 @@ struct GameObjectCollection {
 //
 // Top level engine functionality - setup, main loop and shutdown
 //
-int engineInit(const char* windowTitle, int initWidth = 1920, int initHeight = 1080, float initViewplaneWidth = 5.0f);
+int engineInit(const char* windowTitle, int initWidth = 1920, int initHeight = 1080, float initViewplaneWidth = 5.0f, bool enableVSync = true);
 void engineMainLoop();
 void engineShutdown();
 
